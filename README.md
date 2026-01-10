@@ -57,5 +57,47 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 unzip awscliv2.zip
 sudo ./aws/install
 ```
-3. Clone the website code: https://github.com/yeshwanthlm/CICD-Pipeline-for-the-2048.git
-The website code for 2048 game is already provided to you. To get this code, open your preferred IDE and open a terminal
+
+### Step 1: Prepare the 2048 Game Code:
+Clone the Repo
+```sh
+git clone https://github.com/yeshwanthlm/CICD-Pipeline-for-the-2048.git
+cd CICD-Pipeline-for-the-2048
+```
+Build the Docker Image:
+```sh
+docker build -t 2048-game .
+```
+Authenticate with ECR:
+```sh
+aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin <ECR_URI>
+
+#Note : Do not forget to replace the ECR URI and change the region if it is different for you
+```
+Example buildspec.yaml file:
+
+```yaml
+version: 0.2
+​
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region <your-region> | docker login --username AWS --password-stdin <your-ecr-repository-uri>
+  build:
+    commands:
+      - echo Building the Docker image...
+      - docker build -t <image-name> .
+      - echo Tagging the Docker image...
+      - docker tag <image-name>:latest <your-ecr-repository-uri>:latest
+  post_build:
+    commands:
+      - echo Pushing the Docker image to Amazon ECR...
+      - docker push <your-ecr-repository-uri>:latest
+      - echo Creating imagedefinitions.json file for ECS deployment...
+      - echo '[{"name":"<container-name>","imageUri":"<your-ecr-repository-uri>/<repository-name>:latest"}]' > imagedefinitions.json
+​
+artifacts:
+  files:
+    - imagedefinitions.json
+```
