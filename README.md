@@ -51,6 +51,11 @@ sudo usermod -aG docker $USER
 newgrp docker
 ```
 
-2. Download and configure AWS CLI: https://aws.amazon.com/cli/
+2. Download and configure AWS CLI: https://aws.amazon.com/cli/:
+```sh
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+```
 3. Clone the website code: https://github.com/yeshwanthlm/CICD-Pipeline-for-the-2048.git
 The website code for 2048 game is already provided to you. To get this code, open your preferred IDE and open a terminal
