@@ -34,3 +34,23 @@ We'll go through the following steps in the next few lessons.
 This is what our project will look like, once built:
 <img width="1832" height="1012" alt="image" src="https://github.com/user-attachments/assets/6c9ea41e-18e3-4fc6-8b2a-3599645461f3" />
 
+### Pre-requisites:
+1. Install Docker on your local machine or use a temporary EC2 Instance:
+
+```sh
+sudo apt-get update -y
+sudo apt-get install ca-certificates curl gnupg unzip -y
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update -y
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+sudo systemctl enable docker
+sudo systemctl start docker
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+2. Download and configure AWS CLI: https://aws.amazon.com/cli/
+3. Clone the website code: https://github.com/yeshwanthlm/CICD-Pipeline-for-the-2048.git
+The website code for 2048 game is already provided to you. To get this code, open your preferred IDE and open a terminal
