@@ -68,12 +68,20 @@ Build the Docker Image:
 ```sh
 docker build -t 2048-game .
 ```
+Tag the Docker Image to ECR:
+```sh
+docker tag 2048-game:latest <ECR_URI>:latest
+```
+
 Authenticate with ECR:
 ```sh
-aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin <ECR_URI>
-
-#Note : Do not forget to replace the ECR URI and change the region if it is different for you
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <ECR_URI>
 ```
+Push the Docker Image to ECR:
+```sh
+docker push <ECR_URI>:latest
+```
+
 Example buildspec.yaml file:
 
 ```yaml
@@ -83,7 +91,7 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region <your-region> | docker login --username AWS --password-stdin <your-ecr-repository-uri>
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <your-ecr-repository-uri>
   build:
     commands:
       - echo Building the Docker image...
