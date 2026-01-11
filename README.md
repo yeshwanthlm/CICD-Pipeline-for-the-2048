@@ -109,3 +109,28 @@ artifacts:
   files:
     - imagedefinitions.json
 ```
+
+### Step 2: Set up CodeBuild and CodePipelinefor CI/CD
+
+Create an IAM Role for CodeBuild
+```sh
+AmazonEC2ContainerRegistryFullAccess
+AWSCodeBuildDeveloperAccess
+AmazonS3FullAccess
+```
+Inline Policy:
+```JSON
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecs:UpdateService",
+                "ecs:DescribeServices"
+            ],
+            "Resource": "arn:aws:ecs:us-east-1:146039528711:service/2048-game-cluster/2048-service"
+        }
+    ]
+}
+```
